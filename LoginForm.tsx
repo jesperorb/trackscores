@@ -1,12 +1,14 @@
 import * as React from "react";
 import { Input, Button } from "react-native-elements";
-import { useAuth } from "reactfire";
+import { useAuth, useFirestore } from "reactfire";
 import { View, StyleSheet } from "react-native";
 
 type LoginFormProps = {}
 
 export const LoginForm: React.FC<LoginFormProps> = () => {
   const auth = useAuth();
+  const usersRef = useFirestore()
+    .collection("users");
   const [email, setEmail] = React.useState<string>("");
   const [password, setPassword] = React.useState<string>("");
   const [username, setUsername] = React.useState<string>("");
@@ -21,6 +23,7 @@ export const LoginForm: React.FC<LoginFormProps> = () => {
           if(error.code == "auth/user-not-found"){
             auth.createUserWithEmailAndPassword(email, password)
             .then((result) => {
+              usersRef.add({ id: result.user.uid, username });
               if(username) {
                 result.user.updateProfile({
                   displayName: username

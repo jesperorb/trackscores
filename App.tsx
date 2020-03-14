@@ -10,20 +10,27 @@ import {
   useAuth,
 } from 'reactfire';
 
-import { firebaseConfig, defaultCollection } from './config';
+import { firebaseConfig, scoresCollection, usersCollection } from './config';
 import { LoginForm } from './LoginForm';
 import { Score } from './score';
 
 const InnerApp = () => {
   const auth = useAuth();
-  const collectionRef = useFirestore()
-    .collection(defaultCollection);
-  const scoreValues = useFirestoreCollectionData(collectionRef);
-  const scoreRecords = scoreValues?.map(Score.toRecord) ?? [];
-  console.log(scoreRecords);
+  const scoresRef = useFirestore()
+    .collection(scoresCollection);
+  const usersRef = useFirestore()
+    .collection(usersCollection);
+  const values = useFirestoreCollectionData(scoresRef);
+  const users = useFirestoreCollectionData(usersRef);
+  const record = values?.map(Score.toRecord) ?? [];
   return <View style={styles.container}>
                 <Button onPress={() => auth.signOut()} title="Logga ut" />
-                <Text>Logged in and in the clear</Text>
+                  <Text>Logged in and in the clear</Text>
+                  {record.map(record => <View key={record.reportedByUid}>
+                  <Text>{record.winningsideScore} - {record.losingsideScore}</Text>
+                  <Text>{record.sessionStartTime.toLocaleDateString()} - {record.sessionEndTime.toLocaleDateString()}</Text>
+                  <Text>{record.losingUid} - {record.winningUid}</Text>
+                </View>)}
               </View>
 }
 

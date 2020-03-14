@@ -8,4 +8,5 @@ export const firebaseConfig = {
   appId: "1:823720189857:web:98c3d2ec46226162f635e0"
 };
 
-export const defaultCollection = "scores";
+export const scoresCollection = "scores";
+export const usersCollection = "users";
