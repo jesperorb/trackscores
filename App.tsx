@@ -1,56 +1,47 @@
 import * as React from 'react';
 import { Suspense } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { Button } from "react-native-elements";
+import { Text, View } from 'react-native';
 import {
   FirebaseAppProvider,
-  useFirestore,
-  useFirestoreCollectionData,
   AuthCheck,
-  useAuth,
 } from 'reactfire';
 
-import { firebaseConfig, scoresCollection, usersCollection } from './config';
+import { firebaseConfig } from './config';
 import { LoginForm } from './LoginForm';
-import { Score } from './score';
 
-const InnerApp = () => {
-  const auth = useAuth();
-  const scoresRef = useFirestore()
-    .collection(scoresCollection);
-  const usersRef = useFirestore()
-    .collection(usersCollection);
-  const values = useFirestoreCollectionData(scoresRef);
-  const users = useFirestoreCollectionData(usersRef);
-  const record = values?.map(Score.toRecord) ?? [];
-  return <View style={styles.container}>
-                <Button onPress={() => auth.signOut()} title="Logga ut" />
-                  <Text>Logged in and in the clear</Text>
-                  {record.map(record => <View key={record.reportedByUid}>
-                  <Text>{record.winningsideScore} - {record.losingsideScore}</Text>
-                  <Text>{record.sessionStartTime.toLocaleDateString()} - {record.sessionEndTime.toLocaleDateString()}</Text>
-                  <Text>{record.losingUid} - {record.winningUid}</Text>
-                </View>)}
-              </View>
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
+import { Home } from './screens/home';
+
+const Tab = createBottomTabNavigator();
+
+const Test = () => <View><Text>Test</Text></View>;
+
+const App:React.FC<{}> = () => {
+  return <Tab.Navigator
+            screenOptions={({ route })=> {
+              const iconName = route.name === 'Scores' ? "ios-arrow-left" : "ios-arrow-right";
+              return {
+                tabBarIcon: ({ size }) => <Ionicons name={iconName} size={size} />
+              }
+            }}
+          >
+            <Tab.Screen name="Scores" component={Home} />
+            <Tab.Screen name="Test" component={Test} />
+          </Tab.Navigator>
 }
 
-export default function App() {
+export default function AppContainer() {
   return (
     <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-      <Suspense fallback={<Text>Loading</Text>}>
-        <AuthCheck fallback={<LoginForm />}>
-          <InnerApp />
-        </AuthCheck>
-      </Suspense>
+      <NavigationContainer>
+        <Suspense fallback={<Text>Loading</Text>}>
+          <AuthCheck fallback={<LoginForm />}>
+            <App />
+          </AuthCheck>
+        </Suspense>
+      </NavigationContainer>
     </FirebaseAppProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

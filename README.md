@@ -6,6 +6,7 @@ Application for tracking scores (squash)
 * [`react-native`](https://reactnative.dev/)
 * [`reactfire`](https://github.com/FirebaseExtended/reactfire)
 * [`react-native-elements`](https://react-native-elements.github.io/react-native-elements/docs/overview.html)
+* [`react-navigation`](https://reactnavigation.org/docs/tab-based-navigation)
 
 # Running
 
