@@ -1,18 +1,14 @@
-type FirebaseTimestamp = {
-  nanoseconds: number;
-  seconds: number;
-  toDate: () => Date
-}
+import { FirebaseTimestamp } from "./firebaseTimeStamp";
 
 export type ScoreValues = {
-  winningUid?: string;
-  losingUid?: string;
-  reportedByUid?: string;
-  winningsideScore?: number;
-  losingsideScore?: number;
-  sessionStartTime?: FirebaseTimestamp;
-  sessionEndTime?: FirebaseTimestamp;
-  reportedAt?: FirebaseTimestamp;
+  winningUid: string;
+  losingUid: string;
+  reportedByUid: string;
+  winningsideScore: number;
+  losingsideScore: number;
+  sessionStartTime: FirebaseTimestamp;
+  sessionEndTime: FirebaseTimestamp;
+  reportedAt: FirebaseTimestamp;
 }
 
 export class Score {
@@ -32,17 +28,12 @@ export class Score {
     this.reportedByUid = values.reportedByUid;
     this.winningsideScore = values.winningsideScore;
     this.losingsideScore = values.losingsideScore;
-    this.sessionStartTime = values.sessionStartTime.toDate();
+    this.sessionStartTime = values.sessionStartTime?.toDate();
     this.sessionEndTime = values.sessionEndTime?.toDate();
     this.reportedAt = values.reportedAt?.toDate();
   }
 
   public static toRecord(scoreValues: ScoreValues): Score {
     return new Score(scoreValues);
-  }
-
-  //TODO: validate
-  private validate(){
-
   }
 }

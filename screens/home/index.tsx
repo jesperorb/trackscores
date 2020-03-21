@@ -1,28 +1,18 @@
 import * as React from 'react';
-import { useAuth, useFirestore, useFirestoreCollectionData } from 'reactfire';
-
-import { usersCollection, scoresCollection } from '../../config';
-import { Score } from '../../models/score';
+import { useAuth } from 'reactfire';
 import { View, Text, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 
+import { useFirebaseAppData } from '../../utils/hooks';
+import { ScoreCard } from '../scoreCard';
+
 export const Home: React.FC<{}> = () => {
-  const auth = useAuth();
-  const scoresRef = useFirestore()
-    .collection(scoresCollection);
-  const usersRef = useFirestore()
-    .collection(usersCollection);
-  const values = useFirestoreCollectionData(scoresRef);
-  const users = useFirestoreCollectionData(usersRef);
-  const records = values?.map(Score.toRecord) ?? [];
+  const { signOut } = useAuth();
+  const { scores } = useFirebaseAppData();
   return <View style={styles.container}>
-                <Button onPress={() => auth.signOut()} title="Logga ut" />
+                <Button onPress={() => signOut()} title="Logga ut" />
                   <Text>Logged in and in the clear</Text>
-                  {records.map(record => <View key={record.reportedByUid}>
-                  <Text>{record.winningsideScore} - {record.losingsideScore}</Text>
-                  <Text>{record.sessionStartTime.toLocaleDateString()} - {record.sessionEndTime.toLocaleDateString()}</Text>
-                  <Text>{record.losingUid} - {record.winningUid}</Text>
-                </View>)}
+                  {scores.map(score => <ScoreCard score={score} />)}
           </View>
 }
 

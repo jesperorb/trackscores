@@ -10,3 +10,4 @@ export const firebaseConfig = {
 
 export const scoresCollection = "scores";
 export const usersCollection = "users";
+export const sessionsCollection = "sessions";
