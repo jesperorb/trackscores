@@ -5,18 +5,16 @@ import {
   FirebaseAppProvider,
   AuthCheck,
 } from 'reactfire';
-
-import { firebaseConfig } from './config';
-import { LoginForm } from './LoginForm';
-
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import { Home } from './screens/home';
+
+import { firebaseConfig } from './config';
+import { LoginForm } from './LoginForm';
+import { CurrentSession } from './screens/currentSession';
+import { Profile } from './screens/profile';
 
 const Tab = createBottomTabNavigator();
-
-const Test = () => <View><Text>Test</Text></View>;
 
 const App:React.FC<{}> = () => {
   return <Tab.Navigator
@@ -27,8 +25,8 @@ const App:React.FC<{}> = () => {
               }
             }}
           >
-            <Tab.Screen name="Scores" component={Home} />
-            <Tab.Screen name="Test" component={Test} />
+            <Tab.Screen name="Current Session" component={CurrentSession} />
+            <Tab.Screen name="Profile" component={Profile} />
           </Tab.Navigator>
 }
 

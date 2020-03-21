@@ -8,6 +8,6 @@ export const firebaseConfig = {
   appId: "1:823720189857:web:98c3d2ec46226162f635e0"
 };
 
-export const scoresCollection = "scores";
+export const matchesCollection = "matches";
 export const usersCollection = "users";
 export const sessionsCollection = "sessions";
