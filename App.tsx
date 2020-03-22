@@ -19,7 +19,7 @@ const Tab = createBottomTabNavigator();
 const App:React.FC<{}> = () => {
   return <Tab.Navigator
             screenOptions={({ route })=> {
-              const iconName = route.name === 'Scores' ? "ios-arrow-left" : "ios-arrow-right";
+              const iconName = route.name === 'Scores' ? "ios-add-circle" : "ios-add-circle";
               return {
                 tabBarIcon: ({ size }) => <Ionicons name={iconName} size={size} />
               }

@@ -2,28 +2,27 @@ import { FirebaseTimestamp } from "./firebaseTimeStamp";
 
 export type SessionValues = {
   id?: string;
-  participants: string[],
-  scores: string[]
-  sessionStartTime: FirebaseTimestamp;
-  sessionEndTime: FirebaseTimestamp;
+  matches: string[];
+  participants: string[];
+  startTime: FirebaseTimestamp;
+  endTime: FirebaseTimestamp;
+  reportedBy: string;
 }
 
 export class Session {
   public readonly id: string | undefined;
+  public readonly matches: string[];
   public readonly participants: string[];
-  public readonly scores: string[];
-  public readonly sessionStartTime: Date | null;
-  public readonly sessionEndTime: Date | null;
+  public readonly startTime: Date | null;
+  public readonly endTime: Date | null;
+  public readonly reportedBy: string;
 
   constructor(values: Partial<SessionValues>){
     this.id = values.id;
+    this.matches = values.matches ?? [];
     this.participants = values.participants ?? [];
-    this.scores = values.scores ?? [];
-    this.sessionStartTime = values.sessionStartTime?.toDate() ?? null;
-    this.sessionEndTime = values.sessionEndTime?.toDate() ?? null;
-  }
-
-  public static toRecord(scoreValues: Partial<SessionValues>): Session {
-    return new Session(scoreValues);
+    this.startTime = values.startTime?.toDate() ?? null;
+    this.endTime = values.endTime?.toDate() ?? null;
+    this.reportedBy = values.reportedBy ?? "";
   }
 }

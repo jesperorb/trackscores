@@ -1,26 +1,20 @@
 import { useFirestore, useFirestoreCollection } from "reactfire";
 
-import { matchesCollection, usersCollection, sessionsCollection } from "../config";
-import { Match, MatchValues } from "../models/match";
+import { usersCollection, sessionsCollection, matchesCollection } from "../config";
 import { Session, SessionValues } from "../models/session";
 import { querySnapshotToRecords } from "./";
 import { User, UserValues } from "../models/user";
+import { Match } from "../models/match";
 
 export type FirebaseAppData = {
   sessions: Session[];
-  matches: Match[];
   users: User[];
   sessionsRef: firebase.firestore.CollectionReference;
+  usersRef: firebase.firestore.CollectionReference;
+  matchesRef: firebase.firestore.CollectionReference;
 }
 
 export function useFirebaseAppData(): FirebaseAppData {
-  const matchesRef = useFirestore().collection(matchesCollection);
-  const matchesSnapshot = useFirestoreCollection(matchesRef);
-  const matchRecords = querySnapshotToRecords<Match, MatchValues>(
-    <firebase.firestore.QuerySnapshot>(<unknown>matchesSnapshot),
-    Match
-  );
-
   const usersRef = useFirestore().collection(usersCollection);
   const usersSnapshot = useFirestoreCollection(usersRef);
   const userRecords = querySnapshotToRecords<User, UserValues>(
@@ -34,11 +28,14 @@ export function useFirebaseAppData(): FirebaseAppData {
     <firebase.firestore.QuerySnapshot>(<unknown>sessionsSnapshot),
     Session
   );
+  const matchesRef = useFirestore().collection(matchesCollection);
+  const matchesSnapshot = useFirestoreCollection(matchesRef);
 
   return {
     sessions: sessionRecords,
-    matches: matchRecords, 
-    users: userRecords, 
-    sessionsRef
+    users: userRecords,
+    sessionsRef,
+    usersRef,
+    matchesRef
   };
 }
